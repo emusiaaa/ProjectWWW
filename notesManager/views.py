@@ -46,6 +46,8 @@ def create_note(request):
                 note.save()
                 return redirect("/")
         else:
+                form22 = GroupForm(request.POST)
+                x = form22.is_valid()
                 group_text = request.POST.get('gName')
                 post = NoteGroup(name=group_text, author=request.user)
                 post.save()

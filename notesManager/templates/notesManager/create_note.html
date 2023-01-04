@@ -35,6 +35,7 @@ function create_post() {
 };
 $(document).ready(function() {
             $("#formTwo").submit(function(e) {
+                e.preventDefault();
                 create_post();
             });
 
