@@ -1,0 +1,12 @@
+{% extends 'notesManager/base.html' %}
+{% block title %}
+    Log in
+{% endblock %}
+
+{% block container %}
+    <form method="post">
+        {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit">Log In</button>
+    </form>
+{% endblock %}

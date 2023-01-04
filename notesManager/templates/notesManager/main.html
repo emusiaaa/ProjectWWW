@@ -1,0 +1,18 @@
+{% extends 'notesManager/base.html' %}
+{% block title %}
+    Main page
+{% endblock %}
+
+{% block container %}
+    {% for note in notes %}
+            <h3>title: {{ note.title }}</h3>
+            <h3>author: {{ note.author }}</h3>
+            <h5>content: {{ note.content }}</h5>
+        <form method="post">
+            {% csrf_token %}
+        <button type="submit" name="note-id" value="{{ note.id }}">Delete</button>
+        </form>
+        {% empty %}
+        <p>sorry no notes</p>
+    {% endfor %}
+{% endblock %}

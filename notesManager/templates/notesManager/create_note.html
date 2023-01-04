@@ -1,0 +1,111 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    const csrf = document.getElementsByName('csrfmiddlewaretoken');
+function openForm() {
+  document.getElementById("formTwo").style.display = "block";
+}
+function closeForm() {
+  document.getElementById("formTwo").style.display = "none";
+}
+
+
+function create_post() {
+    console.log("create post is working!") // sanity check
+    let groupName = document.getElementById("groupName").value;
+    console.log(groupName)
+    $.ajax({
+        url : "create_note", // the endpoint
+        type : "POST", // http method
+        data : {gName : groupName,
+                csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val(),
+                hloooo : 12
+        }, // data sent with the post request
+        // handle a successful response
+        success : function() {
+            console.log("success"); // another sanity check
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+    closeForm();
+};
+$(document).ready(function() {
+            $("#formTwo").submit(function(e) {
+                create_post();
+            });
+
+        });
+</script>
+
+<style>
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+</style>
+
+{% extends 'notesManager/base.html' %}
+{% block title %}
+    Create note
+{% endblock %}
+
+{% block container %}
+    <button class="open-button" onclick="openForm()">Add new group</button>
+
+<div class="form-popup" id="formTwo">
+  <form method="post" class="form-container" id="formTwo" name="formTwo">
+      {% csrf_token %}
+    <h3>Add new group</h3>
+      <div class="fieldWrapper" id="the_post">
+        <input type="text" id="groupName">
+    </div>
+        <button type="submit" class="btn" name="form_type" value="formTwo">Add</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+  </form>
+</div>
+
+    <form method="post" id="formOne">
+        {% csrf_token %}
+        {{ form1.as_p }}
+        <button type="submit" name="form_type" value="formOne">Save your note</button>
+    </form>
+{% endblock %}

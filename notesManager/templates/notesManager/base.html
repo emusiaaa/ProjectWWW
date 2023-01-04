@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}
+        Title
+    {% endblock %}</title>
+</head>
+<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #613F75;
+        font-family: monospace;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #e8aeb7;
+    }
+
+    .active {
+        background-color: #e8aeb7;
+    }
+</style>
+
+<body onload="checkFirstVisit()">
+<div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="#news">News</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="/create_note">New note</a></li>
+            <li style="float:right"><a class="active" href="/logout">Logout {{ user.username }}</a></li>
+        {% else %}
+            <li style="float:right"><a class="active" href="/login">Login</a></li>
+            <li style="float:right"><a class="active" href="/register">Register</a></li>
+        {% endif %}
+
+    </ul>
+</div>
+<div>
+    {% block container %}
+    {% endblock %}
+</div>
+</body>
+</html>
