@@ -1,28 +1,145 @@
+<script>
+    function onlyPermittedCharacters(str){
+        return /^[0-9A-z@.+\-_]+$/.test(str);
+    }
+    function isItAnEmail(str){
+        return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/.test(str);
+    }
+    function checkUsername(){
+        let username = document.getElementById("id_username").value;
+        if(!onlyPermittedCharacters(username))
+        {
+            document.getElementById("username_error").innerHTML = "Only letters, numbers and @+-_ are permitted";
+            document.getElementById("username_error").style.display = 'block';
+            return false;
+        }
+        if(username.length > 200)
+        {
+            document.getElementById("username_error").innerHTML = "Only 200 characters are permitted";
+            document.getElementById("username_error").style.display = 'block';
+            return false;
+        }
+        document.getElementById("username_error").innerHTML = "";
+        document.getElementById("username_error").style.display = 'none';
+        return true;
+    }
+    function checkEmail(){
+        let mail = document.getElementById("id_email").value;
+        if(!isItAnEmail(mail)) {
+            document.getElementById("email_error").innerHTML = "Incorrect email format";
+            document.getElementById("email_error").style.display = 'block';
+            return false;
+        }
+        document.getElementById("email_error").style.display = 'none';
+        document.getElementById("email_error").innerHTML = "";
+        return true;
+    }
+    function validateForm(){
+        let isUsernameCorrect = checkUsername();
+        let isEmailCorrect = checkEmail();
+        return isUsernameCorrect && isEmailCorrect;
+    }
+</script>
+<style>
+    .helptext{
+        color: cadetblue;
+    }
+</style>
+<style>
+    .form-container {
+        border: 2px #613F75 solid;
+        width: 50%;
+        min-width: 400px;
+        padding: 10px 20px;
+        font-size: 15px;
+        background-color: #F6F2F8;
+        border-radius: 20px;
+        margin-top: 20px;
+    }
+
+    .form-row {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        height: 40px;
+        margin: 20px auto;
+        justify-content: center;
+    }
+
+    .form-label {
+        flex: 1;
+        display: flex;
+        margin: auto;
+    }
+
+    .form-input {
+        flex: 2;
+        display: flex;
+        margin: auto;
+        width: 100%;
+        height: 30px;
+    }
+
+    input {
+        width: 100%;
+    }
+    .submit-button {
+        background-color: #613F75;
+        color: white;
+        cursor: pointer;
+        width: 30%;
+        opacity: 0.8;
+        border: 0px black solid;
+        border-radius: 20px;
+        height: 30px;
+        margin: auto;
+        font-family: inherit;
+    }
+    .error{
+        background-color: #E06C9F;
+        display: none;
+    }
+</style>
 {% extends 'notesManager/base.html' %}
+{#{% load static %}#}
 {% block title %}
     Register
 {% endblock %}
 
 {% block container %}
+    {{ form.non_field_errors}}
+     {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+        </ul>
+    {% endif %}
     {#    <form method="post">#}
     {#        {% csrf_token %}#}
     {#        {{ form.as_table }}#}
     {#        <button type="submit">Register</button>#}
     {#    </form>#}
-    <form method="post">
+    <form method="post" onsubmit="return validateForm()" class="form-container">
         {% csrf_token %}
         {% for field in form %}
-            <p>
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-                    <small >{{ field.help_text }}</small>
-                {% endif %}
+            <div class="form-row">
+                <div class="form-label">
+                    {{ field.label_tag }}
+                </div>
+                <div class="form-input">
+                    {{ field }}
+                </div>
+            </div>
                 {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
+                    <label style="color: red">{{ error }}</label>
                 {% endfor %}
-            </p>
+            <div class="form-row error" id="{{ field.name}}_error">
+                <span class="error-msg"></span>
+            </div>
         {% endfor %}
-        <button type="submit">Sign up</button>
+        <div class="form-row">
+            <button type="submit" class="submit-button">Sign up</button>
+        </div>
     </form>
 {% endblock %}

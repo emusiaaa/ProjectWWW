@@ -1,5 +1,4 @@
-<style>
-    .form-container {
+.form-container {
         border: 2px #613F75 solid;
         width: 50%;
         min-width: 400px;
@@ -15,18 +14,19 @@
         width: 100%;
         flex-direction: row;
         height: 40px;
-        margin: 20px auto;
+        margin: 10px auto;
         justify-content: center;
     }
 
     .form-label {
         flex: 1;
+        justify-content: center;
         display: flex;
         margin: auto;
     }
 
     .form-input {
-        flex: 2;
+        flex: 3;
         display: flex;
         margin: auto;
         width: 100%;
@@ -48,27 +48,3 @@
         margin: auto;
         font-family: inherit;
     }
-</style>
-{% extends 'notesManager/base.html' %}
-{#{% load static %}#}
-{% block title %}
-    Log in
-{% endblock %}
-
-{% block container %}
-
-    <form method="post" class="form-container">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-row">
-                <div class="form-label">{{ field.label_tag }}</div>
-                <div class="form-input">{{ field }}</div>
-            </div>
-        {% endfor %}
-    <div class="form-row">
-        <button type="submit" class="submit-button">Log In</button>
-    </div>
-    </form>
-
-
-{% endblock %}

@@ -51,11 +51,8 @@ def create_note(request):
                 group_text = request.POST.get('gName')
                 post = NoteGroup(name=group_text, author=request.user)
                 post.save()
-                response_data = {}
-                response_data['name'] = group_text
 
     form1 = NoteForm(author=request.user)
-
     form2 = GroupForm()
     return render(request, 'notesManager/create_note.html', {'form1': form1, 'form2': form2})
 

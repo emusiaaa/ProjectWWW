@@ -5,15 +5,36 @@
     <title>{% block title %}
         Title
     {% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200&display=swap" rel="stylesheet">
+{#<link rel="stylesheet" href="{% static 'styling.css' %}">#}
 </head>
 <style>
-    ul {
+    body {
+        background-color: #E3D7EA;
+        font-family: 'Sora', sans-serif;
+    }
+
+    .navbar {
         list-style-type: none;
         margin: 0;
         padding: 0;
         overflow: hidden;
         background-color: #613F75;
-        font-family: monospace;
+        left: 0;
+        top: 0;
+        position: fixed;
+        width: 100%;
+    }
+
+    .container {
+        position: relative;
+        top: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
     }
 
     li {
@@ -24,12 +45,17 @@
         display: block;
         color: white;
         text-align: center;
-        padding: 14px 16px;
+        padding: 10px 16px;
         text-decoration: none;
+        margin: 5px;
+        font-size: 15px;
+        min-width: 50px;
     }
 
-    li a:hover:not(.active) {
-        background-color: #e8aeb7;
+    li a:hover {
+        background-color: #AB88BF;
+        border-width: 0px;
+        border-radius: 50px;
     }
 
     .active {
@@ -37,22 +63,21 @@
     }
 </style>
 
-<body onload="checkFirstVisit()">
+<body>
 <div>
-    <ul>
+    <ul class="navbar">
         <li><a href="/">Home</a></li>
-        <li><a href="#news">News</a></li>
         {% if user.is_authenticated %}
             <li><a href="/create_note">New note</a></li>
-            <li style="float:right"><a class="active" href="/logout">Logout {{ user.username }}</a></li>
+            <li style="float:right"><a href="/logout">Logout {{ user.username }}</a></li>
         {% else %}
-            <li style="float:right"><a class="active" href="/login">Login</a></li>
-            <li style="float:right"><a class="active" href="/register">Register</a></li>
+            <li style="float:right"><a href="/login">Login</a></li>
+            <li style="float:right"><a href="/register">Register</a></li>
         {% endif %}
 
     </ul>
 </div>
-<div>
+<div class="container">
     {% block container %}
     {% endblock %}
 </div>

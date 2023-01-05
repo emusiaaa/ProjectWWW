@@ -71,7 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjectWWW.wsgi.application'
 
-
+STATIC_URL = 'static/'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 

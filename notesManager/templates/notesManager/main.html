@@ -13,6 +13,6 @@
         <button type="submit" name="note-id" value="{{ note.id }}">Delete</button>
         </form>
         {% empty %}
-        <p>sorry no notes</p>
+        <p>There's no notes yet... Add one <a href="/create_note">here</a></p>
     {% endfor %}
 {% endblock %}
