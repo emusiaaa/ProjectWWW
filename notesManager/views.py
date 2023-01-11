@@ -28,8 +28,10 @@ def register_request(request):
             login(request, user)
             messages.success(request, "Registration successful.")
             return redirect("/")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
-    form = NewUserForm()
+        # messages.error(request, "Unsuccessful registration. Invalid information.")
+    else:
+        form = NewUserForm()
+    # args['form'] = form
     return render(request, 'registration/register.html', {'form': form})
 
 
@@ -37,22 +39,23 @@ def register_request(request):
 @login_required(login_url="/login")
 def create_note(request):
     if request.method == 'POST':
-        m = request.POST.get("form_type")
-        if request.POST.get("form_type") == 'formOne':
-            form1 = NoteForm(request.user, request.POST)
-            if form1.is_valid():
-                note = form1.save(commit=False)
+        # m = request.POST.get("form_type")
+        if request.POST.get("form_type") == 'create_note_form_id':
+            create_note_form = NoteForm(request.user, request.POST)
+            if create_note_form.is_valid():
+                note = create_note_form.save(commit=False)
                 note.author = request.user
                 note.save()
                 return redirect("/")
         else:
-                form22 = GroupForm(request.POST)
-                x = form22.is_valid()
-                group_text = request.POST.get('gName')
-                post = NoteGroup(name=group_text, author=request.user)
-                post.save()
+            form22 = GroupForm(request.POST)
+            if form22.is_valid():
+                group = form22.save(commit=False)
+                group.author = request.user
+                group.save()
+                return redirect("/create_note")
 
-    form1 = NoteForm(author=request.user)
-    form2 = GroupForm()
-    return render(request, 'notesManager/create_note.html', {'form1': form1, 'form2': form2})
+    create_note_form = NoteForm(author=request.user)
+    form22 = GroupForm()
+    return render(request, 'notesManager/create_note.html', {'create_note_form': create_note_form, 'form22': form22})
 

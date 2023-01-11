@@ -95,10 +95,6 @@
         margin: auto;
         font-family: inherit;
     }
-    .error{
-        background-color: #E06C9F;
-        display: none;
-    }
 </style>
 {% extends 'notesManager/base.html' %}
 {#{% load static %}#}
@@ -108,13 +104,7 @@
 
 {% block container %}
     {{ form.non_field_errors}}
-     {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-        </ul>
-    {% endif %}
+
     {#    <form method="post">#}
     {#        {% csrf_token %}#}
     {#        {{ form.as_table }}#}
@@ -134,9 +124,7 @@
                 {% for error in field.errors %}
                     <label style="color: red">{{ error }}</label>
                 {% endfor %}
-            <div class="form-row error" id="{{ field.name}}_error">
-                <span class="error-msg"></span>
-            </div>
+                <label style="color: red" class="error-msg" id="{{ field.name}}_error"></label>
         {% endfor %}
         <div class="form-row">
             <button type="submit" class="submit-button">Sign up</button>

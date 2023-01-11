@@ -15,14 +15,14 @@ class NewUserForm(UserCreationForm):
         model = User
         fields = ("username", "email", "password1", "password2")
 
-    def username_clean(self):
+    def clean_username(self):
         username = self.cleaned_data['username'].lower()
         new = User.objects.filter(username=username)
         if new.count():
             raise ValidationError('User Already Exist')
         return username
 
-    def email_clean(self):
+    def clean_email(self):
         email = self.cleaned_data['email'].lower()
         new = User.objects.filter(email=email)
         if new.count():

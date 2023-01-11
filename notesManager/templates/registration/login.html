@@ -36,6 +36,13 @@
     input {
         width: 100%;
     }
+
+    input:-webkit-autofill {
+        filter: none;
+        background-color: #E3D7EA;
+        box-shadow: 0 0 0 40px #E3D7EA inset !important;
+    }
+
     .submit-button {
         background-color: #613F75;
         color: white;
@@ -51,6 +58,8 @@
 </style>
 {% extends 'notesManager/base.html' %}
 {#{% load static %}#}
+{#{% load static %}#}
+{#<link href="{% static 'styling.css' %}" rel="stylesheet">#}
 {% block title %}
     Log in
 {% endblock %}
@@ -65,9 +74,9 @@
                 <div class="form-input">{{ field }}</div>
             </div>
         {% endfor %}
-    <div class="form-row">
-        <button type="submit" class="submit-button">Log In</button>
-    </div>
+        <div class="form-row">
+            <button type="submit" class="submit-button">Log In</button>
+        </div>
     </form>
 
 
