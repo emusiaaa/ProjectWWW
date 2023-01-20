@@ -47,7 +47,7 @@ class NewUserForm(UserCreationForm):
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ("title", "group", "content")
+        fields = ("group", "title", "content")
 
     def __init__(self, author=None, *args, **kwargs):
         super(NoteForm, self).__init__(*args, **kwargs)
@@ -61,3 +61,19 @@ class GroupForm(forms.ModelForm):
         model = NoteGroup
         fields = ("name",)
 
+    def __init__(self, author=None,  *args, **kwargs):
+        self.author = author
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        new = NoteGroup.objects.filter(author=self.author, name=name)
+        if new.count():
+            raise ValidationError('Group Already Exist')
+        return name
+
+    def save(self, commit=True):
+        group = super(GroupForm, self).save(commit=False)
+        if commit:
+            group.save()
+        return group

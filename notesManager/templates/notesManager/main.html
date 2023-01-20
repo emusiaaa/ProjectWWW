@@ -1,18 +1,62 @@
+<style>
+    .note-container {
+        width: 90%;
+        min-width: 400px;
+        padding: 10px 20px;
+        font-size: 15px;
+        display: flex;
+    }
+
+    .note-container:nth-child(2n+1) {
+        background: #BDA2CD;
+    }
+
+    .note-container:nth-child(2n) {
+        background: #D0BDDB;
+    }
+
+    .note-title {
+        flex: 3;
+        display: flex;
+        margin: auto;
+    }
+
+    .note-group {
+        flex: 3;
+        display: flex;
+        margin: auto;
+    }
+
+    .note-button {
+        flex: 1;
+        display: flex;
+        margin: auto;
+    }
+</style>
 {% extends 'notesManager/base.html' %}
 {% block title %}
     Main page
 {% endblock %}
 
 {% block container %}
+    <div class="note-container">
+        <div class="note-title" style="font-weight: bold">TITLE</div>
+        <div class="note-group" style="font-weight: bold">GROUP</div>
+        <div class="note-button" style="font-weight: bold">DELETE</div>
+    </div>
     {% for note in notes %}
-            <h3>title: {{ note.title }}</h3>
-            <h3>author: {{ note.author }}</h3>
-            <h5>content: {{ note.content }}</h5>
-        <form method="post">
-            {% csrf_token %}
-        <button type="submit" name="note-id" value="{{ note.id }}">Delete</button>
-        </form>
-        {% empty %}
+        <div class="note-container">
+            <div class="note-title"><a href="{% url 'note-detail' note.id %}">{{ note.title }}</a></div>
+            <div class="note-group">{{ note.group }}</div>
+            <div class="note-button">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="note-id" value="{{ note.id }}">Delete</button>
+                </form>
+            </div>
+
+        </div>
+    {% empty %}
         <p>There's no notes yet... Add one <a href="/create_note">here</a></p>
     {% endfor %}
 {% endblock %}

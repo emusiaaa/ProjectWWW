@@ -1,0 +1,6 @@
+{% extends 'notesManager/base.html' %}
+{% block container %}
+    <h1> hi</h1>
+    <h2>{{ note.title }}</h2>
+    <a href="{% url 'modify-note' note.id %}">modify note</a>
+{% endblock %}

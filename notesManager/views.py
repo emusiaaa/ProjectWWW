@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 
 from .forms import NewUserForm, NoteForm, GroupForm
@@ -18,6 +18,22 @@ def index(request):
             note.delete()
     notes = Note.objects.filter(author=request.user)
     return render(request, 'notesManager/main.html', {"notes": notes})
+
+
+@login_required(login_url="/login")
+def note_details(request, primary_key):
+    note = get_object_or_404(Note, pk=primary_key)
+    return render(request, 'notesManager/note.html', context={'note': note})
+
+
+@login_required(login_url="/login")
+def modify_note(request, primary_key):
+    note = get_object_or_404(Note, pk=primary_key)
+    form = NoteForm(None, request.POST or None, instance=note)
+    if form.is_valid():
+        form.save()
+        return redirect('note-detail', note.pk)
+    return render(request, 'notesManager/update_note.html', context={'note': note, 'form': form})
 
 
 def register_request(request):
@@ -47,15 +63,19 @@ def create_note(request):
                 note.author = request.user
                 note.save()
                 return redirect("/")
+            else:
+                form22 = GroupForm(author=request.user)
         else:
-            form22 = GroupForm(request.POST)
+            form22 = GroupForm(request.user, request.POST)
             if form22.is_valid():
                 group = form22.save(commit=False)
                 group.author = request.user
                 group.save()
                 return redirect("/create_note")
-
-    create_note_form = NoteForm(author=request.user)
-    form22 = GroupForm()
+            else:
+                create_note_form = NoteForm(author=request.user)
+    else:
+        create_note_form = NoteForm(author=request.user)
+        form22 = GroupForm(author=request.user)
     return render(request, 'notesManager/create_note.html', {'create_note_form': create_note_form, 'form22': form22})
 

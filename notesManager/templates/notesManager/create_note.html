@@ -90,10 +90,12 @@
         localStorage.setItem('title', document.getElementById("id_title").value);
         localStorage.setItem('content', document.getElementById("id_content").value);
     }
+
     function ClearNote() {
         localStorage.setItem('title', '');
         localStorage.setItem('content', '');
     }
+
     function fillForm() {
         document.getElementById("id_title").value = localStorage['title'];
         document.getElementById("id_content").value = localStorage['content'];
@@ -129,8 +131,11 @@
                     <div class="form-label">{{ field.label_tag }}</div>
                     <div class="form-input" id="{{ field.name }}">{{ field }}</div>
                 </div>
-
+                {% for error in field.errors %}
+                    <label style="color: red">{{ error }}</label>
+                {% endfor %}
             {% endfor %}
+
             <button type="submit" class="btn" name="form_type" value="formTwo">Add</button>
             <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
         </form>

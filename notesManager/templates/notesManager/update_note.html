@@ -1,0 +1,10 @@
+{% extends 'notesManager/base.html' %}
+{% block container %}
+    <h1> hi</h1>
+    <h2>{{ note.title }}</h2>
+     <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" n>Save your changes</button>
+    </form>
+{% endblock %}
