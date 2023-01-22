@@ -1,0 +1,22 @@
+{% extends 'notesManager/base.html' %}
+{% load static %}
+{% block style %}
+    <link href="{% static 'styling.css' %}" rel="stylesheet">
+{% endblock %}
+{% block container %}
+    <form method="post" class="form-container">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-row">
+                <div class="form-label">{{ field.label_tag }}</div>
+                <div class="form-input">{{ field }}</div>
+            </div>
+             {% for error in field.errors %}
+                    <label style="color: red">{{ error }}</label>
+                {% endfor %}
+        {% endfor %}
+    <div class="form-row">
+        <button type="submit" class="submit-btn">Save your reminder!</button>
+    </div>
+    </form>
+{% endblock %}

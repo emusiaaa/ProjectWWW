@@ -1,57 +1,52 @@
-<style>
-    .note-container {
-        width: 90%;
-        min-width: 400px;
-        padding: 10px 20px;
-        font-size: 15px;
-        display: flex;
-    }
 
-    .note-container:nth-child(2n+1) {
-        background: #BDA2CD;
-    }
-
-    .note-container:nth-child(2n) {
-        background: #D0BDDB;
-    }
-
-    .note-title {
-        flex: 3;
-        display: flex;
-        margin: auto;
-    }
-
-    .note-group {
-        flex: 3;
-        display: flex;
-        margin: auto;
-    }
-
-    .note-button {
-        flex: 1;
-        display: flex;
-        margin: auto;
-    }
-</style>
 {% extends 'notesManager/base.html' %}
+{% load static %}
+{% block style %}
+    <link href="{% static 'main.css' %}" rel="stylesheet">
+{% endblock %}
 {% block title %}
     Main page
 {% endblock %}
 
 {% block container %}
     <div class="note-container">
-        <div class="note-title" style="font-weight: bold">TITLE</div>
-        <div class="note-group" style="font-weight: bold">GROUP</div>
+        <div class="dropdown">
+            <button class="dropbtn">SORT BY</button>
+            <div class="dropdown-content">
+                <label class="dropdown-item"><a href="{% url 'index' %}?sorting=name&group={{ context.group }}">TITLE A-Z</a></label>
+                <label class="dropdown-item"><a href="{% url 'index' %}?sorting=nameDESC&group={{ context.group }}">TITLE Z-A</a></label>
+                <label class="dropdown-item"><a href="{% url 'index' %}?group={{ context.group }}">DATE NEW TO OLD</a></label>
+                <label class="dropdown-item"><a href="{% url 'index' %}?sorting=date&group={{ context.group }}">DATE OLD TO NEW</a></label>
+            </div>
+        </div>
+     <div class="dropdown" style="margin-right: 10px">
+            <button class="dropbtn">GROUP</button>
+            <div class="dropdown-content">
+                {% for group in groups %}
+                    <label class="dropdown-item"><a href="{% url 'index' %}?sorting={{ context.sorting }}&group={{ group.id }}">{{ group.name }}</a></label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="note-container info">
+        <div class="note-details" style="font-weight: bold">DATE</div>
+        <div class="note-details" style="font-weight: bold">TITLE</div>
+        <div class="note-details" style="font-weight: bold">GROUP</div>
         <div class="note-button" style="font-weight: bold">DELETE</div>
     </div>
     {% for note in notes %}
-        <div class="note-container">
-            <div class="note-title"><a href="{% url 'note-detail' note.id %}">{{ note.title }}</a></div>
-            <div class="note-group">{{ note.group }}</div>
+        <div class="note-container info">
+            <div class="note-details">{{ note.pub_date }}</div>
+            <div class="note-details"><a href="{% url 'note-detail' note.id %}">{{ note.title }}</a></div>
+            <div class="note-details">{{ note.group }}</div>
             <div class="note-button">
                 <form method="post">
                     {% csrf_token %}
-                    <button type="submit" name="note-id" value="{{ note.id }}">Delete</button>
+                    <button type="submit" class="delete-button" name="note-id" value="{{ note.id }}">
+                        <img style="height: 30px; width: auto" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/wastebasket_1f5d1-fe0f.png"
+                             alt="buttonpng" border="0"/>
+                    </button>
                 </form>
             </div>
 

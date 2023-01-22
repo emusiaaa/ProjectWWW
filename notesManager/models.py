@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -17,3 +18,17 @@ class Note(models.Model):
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+
+class Remainder(models.Model):
+    class Priority(models.IntegerChoices):
+        HIGH = 3
+        MEDIUM = 2
+        LOW = 1
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=40)
+    date = models.DateField()
+    hour = models.TimeField()
+    priority = models.IntegerField(choices=Priority.choices)
+    done = models.BooleanField(default=False)
+

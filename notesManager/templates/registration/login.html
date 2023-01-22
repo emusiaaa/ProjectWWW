@@ -10,17 +10,29 @@
 {% endblock %}
 
 {% block container %}
-
+    {% for message in messages %}
+        <p style="color:red"> {{ message }}</p>
+    {% endfor %}
     <form method="post" class="form-container">
         {% csrf_token %}
+       {% for key, value in form.errors.items %}
+            <label style="color: red">{{ value }}</label>
+        {% endfor %}
         {% for field in form %}
             <div class="form-row">
                 <div class="form-label">{{ field.label_tag }}</div>
                 <div class="form-input">{{ field }}</div>
             </div>
+            {% for error in field.errors %}
+                <label style="color: red">{{ error }}</label>
+            {% endfor %}
         {% endfor %}
+
         <div class="form-row">
             <button type="submit" class="submit-button">Log In</button>
+        </div>
+        <div class="form-row">
+            <p>Forgot your password? Reset it <a href={% url 'reset_password' %}>here</a></p>
         </div>
     </form>
 

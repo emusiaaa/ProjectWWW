@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from notesManager.models import Note, NoteGroup
+from notesManager.models import Note, NoteGroup, Remainder
 
 
 # Create your forms here.
@@ -77,3 +77,16 @@ class GroupForm(forms.ModelForm):
         if commit:
             group.save()
         return group
+
+class RemainderForm(forms.ModelForm):
+    class Meta:
+        model = Remainder
+        fields = ("title", "date", "hour", "priority")
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'hour': forms.DateInput(attrs={'type': 'time'})
+        }
+
+    def __init__(self, author=None,  *args, **kwargs):
+        self.author = author
+        super(RemainderForm, self).__init__(*args, **kwargs)

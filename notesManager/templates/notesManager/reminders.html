@@ -1,0 +1,99 @@
+<script>
+    function handleHistory() {
+        let style = document.getElementById("upcoming").style.display;
+        if(style=="none"){
+            document.getElementById("upcoming").style.display = "block";
+            document.getElementById("upcoming_btn").innerHTML = "HIDE UPCOMING REMINDERS";
+        }
+        else{
+            document.getElementById("upcoming").style.display = "none";
+            document.getElementById("upcoming_btn").innerHTML = "YOUR UPCOMING REMINDERS";
+        }
+    }
+</script>
+{% extends 'notesManager/base.html' %}
+{% load static %}
+{% block style %}
+    <link href="{% static 'main.css' %}" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    My reminders
+{% endblock %}
+
+{% block container %}
+    <div class="note-container"><h1>YOUR REMINDERS</h1></div>
+    <div class="note-container info">
+        <div class="note-details" style="font-weight: bold">DAY</div>
+        <div class="note-details" style="font-weight: bold">HOUR</div>
+        <div class="title" style="font-weight: bold">TITLE</div>
+        <div class="note-button" style="font-weight: bold">COMPLETE</div>
+    </div>
+    {% for reminder in reminders %}
+        <div class="note-container reminder
+{% if reminder.priority == 3 %}
+very
+{% elif reminder.priority == 2 %}
+medium
+{% else %}
+low
+{% endif %}
+">
+            <div class="note-details">{{ reminder.date }}</div>
+            <div class="note-details">{{ reminder.hour }}</div>
+            <div class="title">{{ reminder.title }}</div>
+            <div class="note-button">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-button" name="reminder-id" value="{{ reminder.id }}">
+                        <img style="height: 30px; width: auto"
+                             src="https://emojipedia-us.s3.amazonaws.com/source/skype/289/check-mark_2714-fe0f.png"
+                             alt="done image" border="0"/>
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p>There's no notes yet... Add one <a href="/create_reminder">here</a></p>
+    {% endfor %}
+    <div class="note-container reminder">
+        <button class="note-button" id="upcoming_btn" onclick="handleHistory()">YOUR UPCOMING REMINDERS</button>
+    </div>
+    <div style="display: none; width: 100%" id="upcoming">
+    <div class="note-container"><h1>YOUR UPCOMING REMINDERS</h1></div>
+        <div class="note-container info">
+            <div class="note-details" style="font-weight: bold">DAY</div>
+            <div class="note-details" style="font-weight: bold">HOUR</div>
+            <div class="title" style="font-weight: bold">TITLE</div>
+            <div class="note-button" style="font-weight: bold">DELETE</div>
+        </div>
+        {% for reminder in upcoming %}
+            <div class="note-container reminder
+{% if reminder.priority == 3 %}
+very
+{% elif reminder.priority == 2 %}
+medium
+{% else %}
+low
+{% endif %}
+">
+
+                <div class="note-details">{{ reminder.date }}</div>
+                <div class="note-details">{{ reminder.hour }}</div>
+                <div class="title">{{ reminder.title }}</div>
+                <div class="note-button">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button" name="reminder-id" value="{{ reminder.id }}">
+                            <img style="height: 30px; width: auto"
+                                 src="https://emojipedia-us.s3.amazonaws.com/source/skype/289/cross-mark_274c.png"
+                                 alt="done image" border="0"/>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p>There's no notes yet... Add one <a href="/create_reminder">here</a></p>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

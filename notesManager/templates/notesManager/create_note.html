@@ -45,45 +45,16 @@
 </script>
 
 <style>
-
-    /* The popup form - hidden by default */
-    .form-popup {
+    .form22 {
         display: none;
-        position: fixed;
-        bottom: 0;
-        right: 15px;
-        border: 3px solid #f1f1f1;
-        z-index: 9;
     }
-
-    /* Add styles to the form container */
-    .form-container {
-        max-width: 300px;
-        padding: 10px;
-        background-color: white;
-    }
-
-    /* Full-width input fields */
-    .form-container input[type=text] {
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0 22px 0;
-        border: none;
-        background: #f1f1f1;
-    }
-
-    /* Set a style for the submit/login button */
-    .form-container .btn {
-        background-color: #04AA6D;
-        color: white;
-        padding: 16px 20px;
-        border: none;
+    .open-form {
+        margin: auto;
+        border: 1px #613F75 solid;
+        border-radius: 10px;
         cursor: pointer;
-        width: 50%;
-        margin-bottom: 10px;
-        opacity: 0.8;
+        padding: 5px;
     }
-
 </style>
 <script>
     function RememberNote() {
@@ -115,19 +86,21 @@
 </script>
 
 {% extends 'notesManager/base.html' %}
+{% load static %}
+{% block style %}
+    <link href="{% static 'styling.css' %}" rel="stylesheet">
+{% endblock %}
 {% block title %}
     Create note
 {% endblock %}
 
 {% block container %}
-    <button class="open-button" onclick="openForm()">Add new group</button>
-
-    <div class="form-popup" id="formTwo">
-        <form method="post" class="form-container" id="formTwo" name="formTwo" onload="fillForm()">
+    <div class="form-container form22" id="formTwo">
+        <form method="POST" id="formTwo" name="formTwo" onload="fillForm()">
             {% csrf_token %}
-            <h3>Add new group</h3>
+            <div class="form-row"><h3>Add new group</h3></div>
             {% for field in form22 %}
-                <div class="fieldWrapper" id="the_post">
+                <div class="form-row" id="the_post">
                     <div class="form-label">{{ field.label_tag }}</div>
                     <div class="form-input" id="{{ field.name }}">{{ field }}</div>
                 </div>
@@ -135,16 +108,36 @@
                     <label style="color: red">{{ error }}</label>
                 {% endfor %}
             {% endfor %}
-
-            <button type="submit" class="btn" name="form_type" value="formTwo">Add</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+            <div class="form-row">
+                <button type="submit" style="width: 100px; margin: 0px 10px;" class="submit-btn" name="form_type"
+                        value="formTwo">Add
+                </button>
+                <button type="button" style="width: 100px; margin: 0px 10px;" class="submit-btn cancel"
+                        onclick="closeForm()">Cancel
+                </button>
+            </div>
         </form>
     </div>
 
-    <form method="post" onsubmit="return RememberNote()" id="formNoteId">
+    <form method="post" onsubmit="return RememberNote()" id="formNoteId" class="form-container">
         {% csrf_token %}
-        {{ create_note_form.as_p }}
-        <button type="submit" name="form_type" value="create_note_form_id" onclick="RememberNote()">Save your note
-        </button>
+        {#        {{ create_note_form.as_p }}#}
+        {% for field in create_note_form %}
+            <div class="form-row">
+                <div class="form-label">{{ field.label_tag }}</div>
+                <div class="form-input">
+                    {{ field }}
+                    {% if field.name == 'group' %}
+                        <button class="open-form" onclick="openForm()">Add new group</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="form-row">
+            <button type="submit" class="submit-btn" name="form_type" value="create_note_form_id"
+                    onclick="RememberNote()">Save your note
+            </button>
+        </div>
+
     </form>
 {% endblock %}

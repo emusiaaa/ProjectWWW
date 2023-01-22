@@ -1,6 +1,37 @@
 {% extends 'notesManager/base.html' %}
+{% load static %}
+{% block style %}
+    <style>
+        .row {
+           display: flex;
+        }
+    </style>
+    <link href="{% static 'styling.css' %}" rel="stylesheet">
+{% endblock %}
 {% block container %}
-    <h1> hi</h1>
-    <h2>{{ note.title }}</h2>
-    <a href="{% url 'modify-note' note.id %}">modify note</a>
+    <div class="form-container">
+        <div class="row">
+            <div class="form-label"><h2>Title:</h2></div>
+            <div class="form-input"><h2 style="text-transform: uppercase">{{ note.title }}</h2></div>
+        </div>
+        <div class="row">
+            <div class="form-label"><b>Date:</b></div>
+            <div class="form-input"><b>{{ note.pub_date }}</b></div>
+        </div>
+         <div class="row">
+            <div class="form-label"><b>Last update:</b></div>
+            <div class="form-input"><b>{{ note.update_date }}</b></div>
+        </div>
+        <div class="row">
+            <div class="form-label"><b>Group:</b></div>
+            <div class="form-input"><b>{{ note.group }}</b></div>
+        </div>
+        <div class="form-row">
+            <div class="form-label"></div>
+            <div class="note-content">{{ note.content }}</div>
+        </div>
+        <div class="form-row">
+            <h2><a href="{% url 'modify-note' note.id %}">Edit</a></h2>
+        </div>
+    </div>
 {% endblock %}

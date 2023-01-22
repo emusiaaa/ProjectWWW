@@ -25,16 +25,17 @@
         top: 0;
         position: fixed;
         width: 100%;
+        z-index: 1;
     }
 
     .container {
         position: relative;
-        top: 80px;
+        top: 60px;
         display: flex;
         align-items: center;
         justify-content: space-around;
         flex-direction: column;
-
+        margin-bottom: 100px;
     }
 
     li {
@@ -72,7 +73,9 @@
     <ul class="navbar">
         <li><a href="/">Home</a></li>
         {% if user.is_authenticated %}
+            <li><a href="/reminders">Reminders</a></li>
             <li><a href="/create_note">New note</a></li>
+            <li><a href="/create_reminder">New reminder</a></li>
             <li style="float:right"><a href="/logout">Logout {{ user.username }}</a></li>
         {% else %}
             <li style="float:right"><a href="/login">Login</a></li>

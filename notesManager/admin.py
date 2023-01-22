@@ -1,3 +1,6 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import NoteGroup, Note, Remainder
+# # Register your models here.
+admin.site.register(Note)
+admin.site.register(NoteGroup)
+admin.site.register(Remainder)

@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'notesManager.apps.NotesmanagerConfig'
+    'notesManager.apps.NotesmanagerConfig',
 ]
 
 MIDDLEWARE = [
@@ -71,10 +72,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjectWWW.wsgi.application'
 
+STATIC_ROOT = "/static/styling.css"
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
